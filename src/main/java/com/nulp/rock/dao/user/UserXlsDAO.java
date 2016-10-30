@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class UserXlsDAO implements IUserDAO {
 
-    private static final String USER_XLSX_FILE = "Login.xlsx";
+    private static final String USER_XLSX_FILE = "TestUsers.xlsx";
     private static final String SHEET_NAME = "ValidData";
 
     private XlsReader xls = new XlsReader(USER_XLSX_FILE, SHEET_NAME);

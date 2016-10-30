@@ -11,6 +11,6 @@ public class UserDP extends DataProviderBase {
 
     @DataProvider
     public static Object[][] validUser() {
-        return DataProviderHelper.toObject(userDao.findById("firstUser"));
+        return DataProviderHelper.toObject(userDao.findById("testUser"));
     }
 }
