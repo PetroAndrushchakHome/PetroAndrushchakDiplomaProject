@@ -67,6 +67,11 @@ public class CustomReport {
     public void writtingSummaryReport() {
 
         if (resultBuffer.length() > 0) {
+            try {
+                deleteLatestReportFolder();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             System.out.println("Into Writing");
             writeResultBufferToFile();
             getImagesReport();
@@ -76,7 +81,7 @@ public class CustomReport {
             getDashBoardReport();
             //TODO
             try {
-                sendEmail();
+                //sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
             }

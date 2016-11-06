@@ -34,6 +34,10 @@ public class Asserter {
         return true;
     }
 
+    public static boolean isAsserter(){
+        return isAsserter;
+    }
+
     public void assertEquals(Object actualObject, Object expectedObject, String failMessage, String passMessage) {
         try {
             isAsserter = true;
