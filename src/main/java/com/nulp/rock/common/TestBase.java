@@ -4,6 +4,8 @@ import com.nulp.rock.dao.base.DAORepository;
 import com.nulp.rock.dao.user.IUserDAO;
 import com.nulp.rock.dao.user.UserXlsDAO;
 import com.nulp.rock.listeners.AnnotationTransformerListener;
+import com.nulp.rock.listeners.TestListener;
+import com.nulp.rock.listeners.TestResultListener;
 import com.nulp.rock.logging.CustomReport;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,6 +24,7 @@ import static com.nulp.rock.common.Driver.wait;
 /**
  * Created by Petro on 30.10.2016.
  */
+@Listeners({AnnotationTransformerListener.class, TestResultListener.class, TestListener.class})
 public class TestBase {
 
     protected RemoteWebDriver driver;
@@ -39,9 +42,7 @@ public class TestBase {
 
     @BeforeClass(alwaysRun = true)
     public void printClassNameBeforeTest() {
-        Logger.logDebug("+++++++++++++++++++++++++++++++++++++++++" + this.getClass().getSimpleName()
-                + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
+        Logger.logDebug("++++++++" + this.getClass().getSimpleName()+ "+++++++");
         reports = new CustomReport();
         reports.setScriptStartTime(System.currentTimeMillis());
         try {
@@ -54,7 +55,6 @@ public class TestBase {
 
     @AfterClass(alwaysRun = true)
     public void printClassName() {
-
         Logger.setTest(false);
         reports.executionHealthReport(getClass().getSimpleName());
         try {
@@ -80,14 +80,13 @@ public class TestBase {
         CustomReport.setFailedTests(0);
         CustomReport.setPassedTests(0);
 
-        Logger.logDebug("+++++++++++++++++++++++++++++++++++++++++" + this.getClass().getSimpleName()
-                + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        Logger.logDebug("++++++++" + this.getClass().getSimpleName()+ "+++++++++");
 
     }
 
     @BeforeMethod(alwaysRun = true)
     public synchronized void start(Method method) {
-        Logger.logDebug("TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST");
+        Logger.logDebug("TEST TEST TEST");
         Logger.logDebug("Start BEFORE Method");
         while (true) {
             driver = Driver.getDriver();
@@ -101,7 +100,6 @@ public class TestBase {
             driver.manage().window().maximize();
         }
 
-        Logger.logDebug("STEP 2");
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         if (!driver.getClass().getSimpleName().contains("AndroidDriver")
                 && !driver.getClass().getSimpleName().contains("Remote")
@@ -114,16 +112,12 @@ public class TestBase {
             driver.get(baseUrl);
         }
         Logger.logDebug("Finish BEFORE Class");
-        //TODO
-        //LoginPage home = new LoginPage();
-        //home.makeThisPageCurrent();
-
         reports.writeTestName(method.getName());
-
     }
 
     @AfterMethod(alwaysRun = true)
     public void end(ITestResult result) {
+        Logger.logDebug("Start AFTER Method");
         if (Driver.getCurrentDriver() != null
                 && !Driver.getCurrentDriver().getClass().getSimpleName().contains("Phone")) {
             try {
@@ -131,15 +125,12 @@ public class TestBase {
                 Logger.makeScreenshot(this.getClass().getSimpleName() + System.currentTimeMillis());
             } catch (Exception ignored) {
             }
-            Logger.logDebug("Start AFTER CLASS");
-            Logger.logDebug("TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST");
             closeWindows();
         }
         Driver.releaseDriver();
 
-        Logger.logDebug("Finish AFTER CLASS");
+        Logger.logDebug("Finish AFTER Method");
 
-        ///////////////////////////////
         if (result.isSuccess()) {
             CustomReport.setPassedTests(CustomReport.getPassedTests() + 1);
         } else {
@@ -169,7 +160,6 @@ public class TestBase {
             if (windowHandles != null || !windowHandles.isEmpty()) {
                 if (windowHandles.size() == 1 || Driver.getCurrentDriver().getClass().getSimpleName().contains("Remote")
                         || Driver.getCurrentDriver().getClass().getSimpleName().contains("Selendroid")) {
-
                     return;
                 }
                 int count = windowHandles.size();
@@ -198,7 +188,6 @@ public class TestBase {
             while ((line = reader.readLine()) != null) {
                 output.append(line + "\n");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

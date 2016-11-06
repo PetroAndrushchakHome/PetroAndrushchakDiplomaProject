@@ -14,7 +14,6 @@ public class LoginTest extends TestBase {
 
     @Test(dataProviderClass = UserDP.class, dataProvider = "validUser")
     public void testLoginGoogle(UserDTO user) {
-        System.out.println("TEST !!!!!!!!");
-
+        System.out.println("TEST  1!!!!!!!!");
     }
 }

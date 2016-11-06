@@ -4,5 +4,5 @@ import com.nulp.rock.dao.base.DAORepository;
 
 public class DataProviderBase {
 
-    public static DAORepository daoRepository = new DAORepository();
+    public static DAORepository daoRepository;
 }
