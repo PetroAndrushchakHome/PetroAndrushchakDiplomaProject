@@ -1,5 +1,8 @@
 package com.nulp.rock.tests;
 
+import com.nulp.rock.business.LoginBO;
+import com.nulp.rock.business.MainBO;
+import com.nulp.rock.common.Asserter;
 import com.nulp.rock.common.TestBase;
 import com.nulp.rock.dataprovider.UserDP;
 import com.nulp.rock.dto.UserDTO;
@@ -16,8 +19,11 @@ public class LoginTest extends TestBase {
     @Test(dataProviderClass = UserDP.class, dataProvider = "validUser")
     public void testLoginGoogle(UserDTO user) {
 
-        MainPage mainPage = new MainPage();
-        mainPage.clickLogin();
+        LoginBO login = new LoginBO();
+        MainBO main = new MainBO();
+
+        login.login(user);
+        this.asserter.assertPass(main.isLogged(),"User is not logged in", "User is logged in");
 
         System.out.println("TEST  1!!!!!!!!");
     }
